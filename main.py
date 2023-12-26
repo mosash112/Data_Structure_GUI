@@ -1,11 +1,13 @@
 from tkinter import *
 from tkinter.ttk import *
+
+from ArrayFrame import ArrayFrame
 from QueueFrame import QueueFrame
 from StackFrame import StackFrame
 
 window_width = 600
 window_height = 500
-array_size = 5
+array_size = 7
 centerx = (window_width/2)
 centery = (window_height/2)
 
@@ -44,7 +46,8 @@ stackBtn = Button(homeFrame, text='Start stack', command=lambda: [hide_frame(hom
                                                                   stackFrame.initialize()])
 stackBtn.grid(row=2, column=0, padx=5, pady=5)
 
-arrayBtn = Button(homeFrame, text='Start array', command=lambda: [hide_frame(homeFrame), show_frame(arrayFrame)])
+arrayBtn = Button(homeFrame, text='Start array', command=lambda: [hide_frame(homeFrame), show_frame(arrayFrame),
+                                                                  arrayFrame.initialize()])
 arrayBtn.grid(row=1, column=2, padx=5, pady=5)
 
 treeBtn = Button(homeFrame, text='Start tree', command=lambda: [hide_frame(homeFrame), show_frame(treeFrame)])
@@ -58,12 +61,9 @@ queueFrame = QueueFrame(window, homeFrame, array_size, window_width, window_heig
 
 stackFrame = StackFrame(window, homeFrame, array_size, window_width, window_height)
 
-
-arrayFrame = StackFrame(window, homeFrame, array_size, window_width, window_height)
-# arrayFrame.initialize()
+arrayFrame = ArrayFrame(window, homeFrame, array_size, window_width, window_height)
 
 treeFrame = StackFrame(window, homeFrame, array_size, window_width, window_height)
-# treeFrame.initialize()
 
 # showing home frame and hiding display frame
 show_frame(homeFrame)

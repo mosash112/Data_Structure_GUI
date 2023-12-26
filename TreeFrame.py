@@ -3,41 +3,41 @@ from tkinter.ttk import *
 from Rectangle import Rectangle
 
 
-class StackFrame(Frame):
-    def __init__(self, master=None, home_frame=None, stack_size=0, width=0, height=0):
+class TreeFrame(Frame):
+    def __init__(self, master=None, home_frame=None, tree_size=0, width=0, height=0):
         super().__init__(master, height=height, width=width)
         self.master = master
-        self.stack_size = stack_size
+        self.tree_size = tree_size
         self.height = height
         self.width = width
         self.centerx = self.width / 2
         self.centery = self.height / 2
-        self.stackContent = []
+        self.treeContent = []
         self.frame = Frame(self.master)
         self.canvas = Canvas(self.frame, bg="#d0d0d0", height=self.height - 100,
                              width=self.width - 15)
         self.errlbl = Label(self.frame, text='')
         self.homeFrame = home_frame
 
-    def push(self, value=None, pos = 0, errlbl=None):
-        size = len(self.stackContent)
-        if size == self.stack_size:
-            print('stack is full')
-            self.errlbl.config(text='stack is full', foreground='red')
+    def push(self, value=None, pos = 0):
+        size = len(self.treeContent)
+        if size == self.tree_size:
+            print('tree is full')
+            self.errlbl.config(text='tree is full', foreground='red')
             return
         newElement = Rectangle(self.canvas)
         newElement.draw(self.centerx - 150, self.centery+100, 50, 50, value, 'green')
-        newElement.move(self.master, self.centerx , self.centery + (50*self.stack_size) - (50 * (self.stack_size - 2 + len(self.stackContent))))
+        newElement.move(self.master, self.centerx , self.centery + (50*self.tree_size) - (50 * (self.tree_size - 2 + len(self.treeContent))))
         # self.shift_elements(newElement)
-        self.stackContent.append(newElement)
+        self.treeContent.append(newElement)
 
     def pop(self):
-        size = len(self.stackContent)
+        size = len(self.treeContent)
         if size == 0:
-            print('stack is empty')
-            self.errlbl.config(text='stack is empty', foreground='red')
+            print('tree is empty')
+            self.errlbl.config(text='tree is empty', foreground='red')
             return
-        lastElement = self.stackContent.pop()
+        lastElement = self.treeContent.pop()
         lastElement.move(self.master, self.centerx+150, self.centery +100)
 
     def initialize(self):
@@ -48,7 +48,7 @@ class StackFrame(Frame):
         self.canvas.pack(fill='both', expand=True)
 
         stackBody = Rectangle(self.canvas)
-        stackBody.draw(self.centerx, self.centery-50,  50, self.stack_size * 50, None, 'yellow')
+        stackBody.draw(self.centerx, self.centery-50,  50, self.tree_size * 50, None, 'yellow')
 
         inputFrame = Frame(self.frame)
         valueEntry = Entry(inputFrame)
