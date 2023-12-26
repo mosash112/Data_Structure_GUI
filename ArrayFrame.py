@@ -19,18 +19,65 @@ class ArrayFrame(Frame):
         self.errlbl = Label(self.frame, text='')
         self.homeFrame = home_frame
 
-    def insert(self, value, index):
+    def insert(self, value, index=''):
         size = len(self.arrayContent)
-        # if size == self.array_size:
-        #     print('array is full')
-        #     self.errlbl.config(text='array is full', foreground='red')
-        #     return
+        if size == self.array_size:
+            print('array is full try updating instead')
+            self.errlbl.config(text='array is full try updating instead', foreground='red')
+            return
+
         newElement = Rectangle(self.canvas)
-        newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
-        newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * index), self.centery - 100)
-        self.arrayContent.pop(index)
-        self.arrayContent.insert(index, newElement)
-        print(size, self.arrayContent)
+        print(index)
+        if index == '':
+            print('index was empty')
+            index = size
+            self.arrayContent.append(newElement)
+            newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
+            newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * index), self.centery - 100)
+        else:
+            index = int(index)
+            if size > index:
+                print('index was within the size')
+                self.shift_elements(index)
+                self.arrayContent.insert(index, newElement)
+                newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
+                newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * index),
+                                self.centery - 100)
+            else:
+                print('index is bigger the size')
+                self.arrayContent.append(newElement)
+                newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
+                newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * size),
+                                self.centery - 100)
+
+    def shift_elements(self, index):
+        size = len(self.arrayContent)
+        if size >= 1:
+            if index > 0:
+                for i in range(abs(index), size):
+                    self.arrayContent[i].move(self.master, self.arrayContent[i].posx + 50, self.arrayContent[i].posy)
+            elif index < 0:
+                for i in range(abs(index), size):
+                    self.arrayContent[i].move(self.master, self.arrayContent[i].posx - 50, self.arrayContent[i].posy)
+
+    def update_element(self, value, index):
+        if index == '':
+            print('must enter an index')
+            self.errlbl.config(text='must enter an index', foreground='red')
+            return
+        size = len(self.arrayContent)
+        index = int(index)
+        if size > index:
+            print('size: ', size, 'index: ', index)
+            newElement = Rectangle(self.canvas)
+            self.arrayContent[index] = newElement
+            newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
+            newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * index),
+                            self.centery - 100)
+        else:
+            print('index out of range')
+            self.errlbl.config(text='index out of range', foreground='red')
+            return
 
     def delete(self, index):
         size = len(self.arrayContent)
@@ -38,16 +85,20 @@ class ArrayFrame(Frame):
             print('array is empty')
             self.errlbl.config(text='array is empty', foreground='red')
             return
-        removed = self.arrayContent.pop(index)
-        self.arrayContent.insert(index, None)
-        if removed is not None:
-            removed.destroy()
-        print(size, self.arrayContent)
-
+        if size > index:
+            removed = self.arrayContent.pop(index)
+            self.shift_elements(-index)
+            if removed is not None:
+                removed.destroy()
+            print(size, self.arrayContent)
+        else:
+            print('index out of range')
+            self.errlbl.config(text='index out of range', foreground='red')
+            return
 
     def initialize(self):
-        for i in range(self.array_size):
-            self.arrayContent.append(None)
+        # for i in range(self.array_size):
+        #     self.arrayContent.append(None)
 
         # display frame components
         frame2Lbl = Label(self.frame, text='Array display frame')
@@ -65,8 +116,11 @@ class ArrayFrame(Frame):
         indexEntry = Entry(entryFrame)
         indexEntry.pack(side=LEFT)
         insertBtn = Button(btnFrame, text='Insert',
-                           command=lambda: [self.insert(valueEntry.get(), int(indexEntry.get()))])
+                           command=lambda: [self.insert(valueEntry.get(), indexEntry.get())])
         insertBtn.pack(side=LEFT)
+        updateBtn = Button(btnFrame, text='Update',
+                           command=lambda: [self.update_element(valueEntry.get(), indexEntry.get())])
+        updateBtn.pack(side=LEFT)
         deleteBtn = Button(btnFrame, text='Delete', command=lambda: [self.delete(int(indexEntry.get()))])
         deleteBtn.pack(side=LEFT)
         self.errlbl.pack(side=LEFT)

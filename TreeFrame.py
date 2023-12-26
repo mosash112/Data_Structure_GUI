@@ -19,7 +19,7 @@ class TreeFrame(Frame):
         self.errlbl = Label(self.frame, text='')
         self.homeFrame = home_frame
 
-    def push(self, value=None, pos = 0):
+    def add(self, value=None):
         size = len(self.treeContent)
         if size == self.tree_size:
             print('tree is full')
@@ -53,7 +53,7 @@ class TreeFrame(Frame):
         inputFrame = Frame(self.frame)
         valueEntry = Entry(inputFrame)
         valueEntry.pack(side=LEFT)
-        pushBtn = Button(inputFrame, text='Push', command=lambda: [self.push(valueEntry.get())])
+        pushBtn = Button(inputFrame, text='Push', command=lambda: [self.add(valueEntry.get())])
         pushBtn.pack(side=LEFT)
         popBtn = Button(inputFrame, text='Pop', command=lambda: [self.pop()])
         popBtn.pack(side=LEFT)
