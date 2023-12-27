@@ -98,6 +98,12 @@ class ArrayFrame(Frame):
             self.errlbl.config(text='index out of range', foreground='red')
             return
 
+    def traverse(self):
+        print("Array content: ", self.arrayContent)
+
+    def search(self):
+        print("serch")
+
     def initialize(self):
         # display frame components
         frame2Lbl = Label(self.frame, text='Array display frame')
@@ -108,8 +114,10 @@ class ArrayFrame(Frame):
         arrayBody = Rectangle(self.canvas)
         arrayBody.draw(self.centerx, self.centery - 100, self.array_size * 50, 50, None, 'yellow')
 
+        lblFrame = Frame(self.frame)
         entryFrame = Frame(self.frame)
         btnFrame = Frame(self.frame)
+        valuelbl = Label(lblFrame, text='value')
         valueEntry = Entry(entryFrame)
         valueEntry.pack(side=LEFT)
         indexEntry = Entry(entryFrame)
