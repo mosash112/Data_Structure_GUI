@@ -4,6 +4,7 @@ from tkinter.ttk import *
 from ArrayFrame import ArrayFrame
 from QueueFrame import QueueFrame
 from StackFrame import StackFrame
+from TreeFrame import TreeFrame
 
 window_width = 600
 window_height = 500
@@ -50,7 +51,8 @@ arrayBtn = Button(homeFrame, text='Start array', command=lambda: [hide_frame(hom
                                                                   arrayFrame.initialize()])
 arrayBtn.grid(row=1, column=2, padx=5, pady=5)
 
-treeBtn = Button(homeFrame, text='Start tree', command=lambda: [hide_frame(homeFrame), show_frame(treeFrame)])
+treeBtn = Button(homeFrame, text='Start tree', command=lambda: [hide_frame(homeFrame), show_frame(treeFrame),
+                                                                treeFrame.initialize()])
 treeBtn.grid(row=2, column=2, padx=5, pady=5)
 
 exitBtn = Button(homeFrame, text='Exit', command=close_window)
@@ -63,7 +65,7 @@ stackFrame = StackFrame(window, homeFrame, array_size, window_width, window_heig
 
 arrayFrame = ArrayFrame(window, homeFrame, array_size, window_width, window_height)
 
-treeFrame = StackFrame(window, homeFrame, array_size, window_width, window_height)
+treeFrame = TreeFrame(window, homeFrame, array_size, window_width, window_height)
 
 # showing home frame and hiding display frame
 show_frame(homeFrame)

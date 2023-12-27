@@ -1,11 +1,14 @@
 from tkinter import *
 from tkinter.ttk import *
+
+from Node import Node
 from Rectangle import Rectangle
 
 
 class TreeFrame(Frame):
     def __init__(self, master=None, home_frame=None, tree_size=0, width=0, height=0):
         super().__init__(master, height=height, width=width)
+        self.root = Node(self.master)
         self.master = master
         self.tree_size = tree_size
         self.height = height
@@ -25,11 +28,26 @@ class TreeFrame(Frame):
             print('tree is full')
             self.errlbl.config(text='tree is full', foreground='red')
             return
-        newElement = Rectangle(self.canvas)
-        newElement.draw(self.centerx - 150, self.centery+100, 50, 50, value, 'green')
-        newElement.move(self.master, self.centerx , self.centery + (50*self.tree_size) - (50 * (self.tree_size - 2 + len(self.treeContent))))
-        # self.shift_elements(newElement)
-        self.treeContent.append(newElement)
+        if size < 1:
+            self.root.draw(self.centerx, self.centery - 50, 15, value, 'red')
+            self.treeContent.append(self.root)
+            return
+        else:
+            newElement = Node(self.canvas)
+            newElement.draw(self.centerx - 150, self.centery + 100, 15, value, 'green')
+            # newElement.move(self.master, self.centerx , self.centery + (50*self.tree_size) - (50 * (self.tree_size - 2 + len(self.treeContent))))
+            # self.shift_elements(newElement)
+            self.treeContent.append(newElement)
+
+    def shift_elements(self, index, flag):
+        size = len(self.treeContent)
+        if size >= 1:
+            if flag:
+                for i in range(abs(index), size):
+                    self.treeContent[i].move(self.master, self.centerx - 100 + (50 * i), self.centery - 100)
+            else:
+                for i in range(abs(index), size):
+                    self.treeContent[i].move(self.master, self.treeContent[i].posx - 50, self.centery - 100)
 
     def pop(self):
         size = len(self.treeContent)
@@ -42,13 +60,12 @@ class TreeFrame(Frame):
 
     def initialize(self):
         # display frame components
-        frameLbl = Label(self.frame, text='Stack display frame')
+        frameLbl = Label(self.frame, text='Tree display frame')
         frameLbl.pack(anchor='center')
 
         self.canvas.pack(fill='both', expand=True)
 
-        stackBody = Rectangle(self.canvas)
-        stackBody.draw(self.centerx, self.centery-50,  50, self.tree_size * 50, None, 'yellow')
+        self.root = Node(self.canvas)
 
         inputFrame = Frame(self.frame)
         valueEntry = Entry(inputFrame)

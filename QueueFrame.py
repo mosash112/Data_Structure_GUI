@@ -28,7 +28,8 @@ class QueueFrame(Frame):
         newElement = Rectangle(self.canvas)
         newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
         newElement.move(self.master, self.centerx - (25 * (self.queue_size - 1)), self.centery - 100)
-        self.shift_elements(newElement)
+        self.shift_elements()
+        self.queueContent.insert(0, newElement)
 
     def dequeue(self):
         size = len(self.queueContent)
@@ -39,12 +40,11 @@ class QueueFrame(Frame):
         lastElement = self.queueContent.pop()
         lastElement.move(self.master, self.centerx + (25 * (self.queue_size + 4)), self.centery)
 
-    def shift_elements(self, newElement):
+    def shift_elements(self):
         size = len(self.queueContent)
         if size >= 1:
             for i in range(size):
-                self.queueContent[i].move(self.master, self.queueContent[i].posx + 50, self.queueContent[i].posy)
-        self.queueContent.insert(0, newElement)
+                self.queueContent[i].move(self.master, self.centerx - 100 + (50*i), self.centery - 100)
 
     def initialize(self):
 

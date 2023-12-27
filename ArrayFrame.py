@@ -38,7 +38,7 @@ class ArrayFrame(Frame):
             index = int(index)
             if size > index:
                 print('index was within the size')
-                self.shift_elements(index)
+                self.shift_elements(index, 1)
                 self.arrayContent.insert(index, newElement)
                 newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
                 newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * index),
@@ -50,15 +50,15 @@ class ArrayFrame(Frame):
                 newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * size),
                                 self.centery - 100)
 
-    def shift_elements(self, index):
+    def shift_elements(self, index, flag):
         size = len(self.arrayContent)
         if size >= 1:
-            if index > 0:
+            if flag:
                 for i in range(abs(index), size):
-                    self.arrayContent[i].move(self.master, self.arrayContent[i].posx + 50, self.arrayContent[i].posy)
-            elif index < 0:
+                    self.arrayContent[i].move(self.master, self.centerx - 100 + (50 * i), self.centery - 100)
+            else:
                 for i in range(abs(index), size):
-                    self.arrayContent[i].move(self.master, self.arrayContent[i].posx - 50, self.arrayContent[i].posy)
+                    self.arrayContent[i].move(self.master, self.arrayContent[i].posx - 50, self.centery - 100)
 
     def update_element(self, value, index):
         if index == '':
@@ -68,12 +68,14 @@ class ArrayFrame(Frame):
         size = len(self.arrayContent)
         index = int(index)
         if size > index:
+            self.arrayContent[index].destroy()
             print('size: ', size, 'index: ', index)
             newElement = Rectangle(self.canvas)
             self.arrayContent[index] = newElement
             newElement.draw(self.centerx - 250, self.centery, 50, 50, value, 'green')
             newElement.move(self.master, self.centerx - (25 * (self.array_size - 1)) + (50 * index),
                             self.centery - 100)
+
         else:
             print('index out of range')
             self.errlbl.config(text='index out of range', foreground='red')
@@ -87,7 +89,7 @@ class ArrayFrame(Frame):
             return
         if size > index:
             removed = self.arrayContent.pop(index)
-            self.shift_elements(-index)
+            self.shift_elements(index, 0)
             if removed is not None:
                 removed.destroy()
             print(size, self.arrayContent)
@@ -97,9 +99,6 @@ class ArrayFrame(Frame):
             return
 
     def initialize(self):
-        # for i in range(self.array_size):
-        #     self.arrayContent.append(None)
-
         # display frame components
         frame2Lbl = Label(self.frame, text='Array display frame')
         frame2Lbl.pack(anchor='center')

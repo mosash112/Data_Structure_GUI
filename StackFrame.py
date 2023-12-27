@@ -28,7 +28,6 @@ class StackFrame(Frame):
         newElement = Rectangle(self.canvas)
         newElement.draw(self.centerx - 150, self.centery+100, 50, 50, value, 'green')
         newElement.move(self.master, self.centerx , self.centery + (50*self.stack_size) - (50 * (self.stack_size - 2 + len(self.stackContent))))
-        # self.shift_elements(newElement)
         self.stackContent.append(newElement)
 
     def pop(self):

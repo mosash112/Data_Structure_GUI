@@ -1,28 +1,25 @@
 from tkinter import Canvas, Label
 
 
-class Rectangle:
+class Node:
     def __init__(self, master=Canvas):
-        self.width = None
-        self.height = None
+        self.radius = None
         self.center = None
         self.shape = None
         self.posy = 0
         self.posx = 0
         self.move_step = 10
-        self.valuelbl = None
+        self.valuelbl = Label()
         self.master = master
         self.after_id = None
 
-    def draw(self, posx, posy, width, height, value=None, fill=None):
+    def draw(self, posx, posy, radius, value=None, fill=None):
         self.posx = posx
         self.posy = posy
-        self.width = width
-        self.height = height
-        self.shape = self.master.create_rectangle(posx - (width / 2), posy - (height / 2), posx + (width / 2),
-                                                  posy + (height / 2), fill=fill)
+        self.radius = radius
+        self.shape = self.master.create_oval(posx - self.radius, posy - self.radius, posx + self.radius,
+                                             posy + self.radius, fill=fill)
         self.valuelbl = self.master.create_text(posx, posy, text=value, font=("Arial", 12), fill="white")
-        # self.center = self.master.create_oval(posx - 3, posy - 3, posx + 3, posy + 3, fill="white")
 
     def move(self, root, targetx, targety):
         if self.after_id:
@@ -51,3 +48,4 @@ class Rectangle:
         self.master.delete(self.shape)
         self.master.delete(self.center)
         self.master.delete(self.valuelbl)
+        # self.destroy()
